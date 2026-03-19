@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  payment-db:
+    image: postgres:15-alpine
+    container_name: payment_progress
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: payment_db
+    ports:
+      - "5433:5432" #Different host for the payment db
+    volumes:
+      - payment_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  payment_db_data:
