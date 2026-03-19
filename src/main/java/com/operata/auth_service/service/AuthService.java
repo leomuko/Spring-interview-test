@@ -1,6 +1,7 @@
 package com.operata.auth_service.service;
 
 
+import com.operata.auth_service.dto.LoginRequest;
 import com.operata.auth_service.dto.RegisterRequest;
 import com.operata.auth_service.entity.User;
 import com.operata.auth_service.repository.UserRepository;
@@ -12,10 +13,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public String registerUser(RegisterRequest registerRequest) {
@@ -35,5 +38,15 @@ public class AuthService {
         userRepository.save(newUser);
 
         return "User registered successfully!";
+    }
+
+    public String loginUser(LoginRequest loginRequest) {
+        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new RuntimeException("Invalid email or password"));
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())){
+            throw new RuntimeException("Invalid email or password");
+        }
+
+        return jwtService.generateToken(user.getEmail());
     }
 }

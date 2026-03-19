@@ -1,5 +1,6 @@
 package com.operata.auth_service.controller;
 
+import com.operata.auth_service.dto.LoginRequest;
 import com.operata.auth_service.dto.RegisterRequest;
 import com.operata.auth_service.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +28,16 @@ public class AuthController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
+        try{
+            String token = authService.loginUser(loginRequest);
+            return ResponseEntity.ok(token);
+
+        }catch (Exception ex){
+            return ResponseEntity.status(401).body(ex.getMessage());
+        }
     }
 }
