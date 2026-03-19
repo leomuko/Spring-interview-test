@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  auth-db:
+    image: postgres:15-alpine
+    container_name: auth_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: auth_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth_db_data:/var/lib/postgresql/data # Saves data so it isn't lost when the container stops
+    restart: unless-stopped
+
+volumes:
+  auth_db_data:
