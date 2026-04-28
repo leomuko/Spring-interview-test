@@ -18,12 +18,12 @@ public class PaymentService {
         this.paymentRepository = paymentRepository;
     }
 
-    public PaymentResponse initiatePayment(PaymentRequest request) {
+    public PaymentResponse initiatePayment(PaymentRequest request, String verifiedEmail) {
         Payment payment = new Payment();
 
         payment.setReferenceId(UUID.randomUUID().toString());
 
-        payment.setUserEmail(request.getUserEmail());
+        payment.setUserEmail(verifiedEmail);
         payment.setAmount(request.getAmount());
         payment.setCurrency(request.getCurrency());
 

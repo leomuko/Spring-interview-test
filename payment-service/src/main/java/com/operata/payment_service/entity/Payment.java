@@ -14,7 +14,7 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //The unique ID we generate and gice to the user
+    //The unique ID we generate and give to the user
     @Column(nullable = false, unique = true)
     private String referenceId;
 
