@@ -2,6 +2,7 @@ package com.operata.payment_service.controller;
 
 import com.operata.payment_service.dto.PaymentRequest;
 import com.operata.payment_service.dto.PaymentResponse;
+import com.operata.payment_service.dto.WebhookRequest;
 import com.operata.payment_service.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,17 @@ public class PaymentController {
 
         PaymentResponse response = paymentService.initiatePayment(request, verifiedEmail);
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/webhook")
+    public ResponseEntity<String> handleWebhook(@RequestBody WebhookRequest request) {
+        try{
+            String result = paymentService.processWebhook(request);
+            return ResponseEntity.ok(result);
+
+        }catch(Exception ex){
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+
     }
 }
